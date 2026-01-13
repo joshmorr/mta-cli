@@ -1,0 +1,23 @@
+{
+  "name": "mta-cli",
+  "module": "src/index.ts",
+  "type": "module",
+  "bin": {
+    "mta": "./src/index.ts"
+  },
+  "private": true,
+  "devDependencies": {
+    "@types/adm-zip": "^0.5.7",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.2",
+    "csv-simple-parser": "^2.0.2",
+    "gtfs-realtime-bindings": "^1.1.1"
+  }
+}
