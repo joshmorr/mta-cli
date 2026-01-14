@@ -13,6 +13,12 @@ export function getStopById(stopId: string): Stop | null {
   return stmt.get(stopId) as Stop | null;
 }
 
+export function getStopByName(name: string): Stop | null {
+  const db = getDb();
+  const stmt = db.prepare("SELECT * FROM stops WHERE stop_name = ?");
+  return stmt.get(name) as Stop | null;
+}
+
 export function searchStopsByName(searchTerm: string): Stop[] {
   const db = getDb();
   const stmt = db.prepare(
@@ -31,3 +37,4 @@ export function getStopsByIds(stopIds: string[]): Stop[] {
   );
   return stmt.all(...stopIds) as Stop[];
 }
+

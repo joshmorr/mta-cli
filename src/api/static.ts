@@ -1,10 +1,10 @@
-import type { Feed } from "../types";
+import type { Feed } from "./types";
 
 const BASE_URL = 'https://rrgtfsfeeds.s3.amazonaws.com';
 
 const filenames: Record<Feed, string> = {
   lirr: 'gtfslirr.zip',
-  mnr: 'gtfsmnr.zip',
+  mnr: 'gtfsmnr.zip'
 };
 
 export async function getStaticData(feed: Feed) {
