@@ -1,18 +1,32 @@
-import parse from "csv-simple-parser";
-import { importData } from "../db/import";
-import { unzip } from "../utils/unzip";
-import { getStaticData } from "../api/static";
+import { Command } from "commander";
+import FeedService from "../services/feed.service";
+import { FeedId } from "../models/static";
 
-export async function update() {
-  const res = await getStaticData('lirr');
-  const unzipped = unzip(Buffer.from(res));
+interface UpdateOptions {
+  feed?: string;
+}
+
+export function registerUpdateCommand(program: Command) {
+  program
+    .command('update')
+    .description('Update data')
+    .option('--feed <feed>', 'Feed name')
+    .action(updateCommand);
+}
+
+async function updateCommand(options: UpdateOptions) {
+  const feedService = new FeedService();
   
-  const parsed = unzipped.map(({ name, data }) => {
-    return {
-      name: name,
-      data: parse(data, { header: true }) as Array<Record<string, string>>,
-    };
-  });
-
-  importData(parsed, "data/lirr.db");
-};
+  try {
+    if (options.feed) {
+      await feedService.updateFeed(options.feed as FeedId);
+      console.log(`Successfully updated feed: ${options.feed}`);
+    } else {
+      await feedService.updateAllFeeds();
+      console.log('Successfully updated all feeds');
+    }
+  } catch (error) {
+    console.error('Error updating feeds:', error instanceof Error ? error.message : error);
+    process.exit(1);
+  }
+}

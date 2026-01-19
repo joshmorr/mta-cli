@@ -1,23 +1,13 @@
-import { tables } from "./schema";
 import { getDb, closeDb } from "./connection";
+import { buildSchema } from "./schemas/builder";
 
 type ParsedData = {
   name: string;
   data: Array<Record<string, string>>;
 };
 
-export function importData(parsed: ParsedData[], dbPath: string) {
+export function importData(parsed: ParsedData[], dbPath: string, feedId: string) {
   const db = getDb(dbPath);
-
-  // Drop existing tables to ensure clean import
-  for (const table of tables) {
-    db.run(`DROP TABLE IF EXISTS ${table.name}`);
-  }
-
-  // Create tables from schema definitions
-  for (const table of tables) {
-    db.run(table.schema);
-  }
 
   // Import data from parsed files with transaction for performance
   db.run("BEGIN TRANSACTION");
@@ -27,14 +17,31 @@ export function importData(parsed: ParsedData[], dbPath: string) {
       const tableName = file.name;
       const rows = file.data;
       
-      if (rows.length === 0) continue;
+      if (rows.length === 0) {
+        console.log(`Skipping empty table: ${tableName}`);
+        continue;
+      }
 
       const firstRow = rows[0];
       if (!firstRow) continue;
 
-      const columns = Object.keys(firstRow);
-      const placeholders = columns.map(() => '?').join(', ');
-      const columnNames = columns.join(', ');
+      const csvColumns = Object.keys(firstRow);
+      
+      // Build schema using hybrid approach (base + feed-specific extensions)
+      const { createStatement, indexes } = buildSchema(tableName, feedId, csvColumns);
+      
+      // Drop existing table and create new one with proper schema
+      db.run(`DROP TABLE IF EXISTS ${tableName}`);
+      db.run(createStatement);
+      
+      // Create indexes for performance
+      for (const indexStmt of indexes) {
+        db.run(indexStmt);
+      }
+
+      // Prepare insert statement
+      const placeholders = csvColumns.map(() => '?').join(', ');
+      const columnNames = csvColumns.join(', ');
       
       const insertStmt = db.prepare(
         `INSERT INTO ${tableName} (${columnNames}) VALUES (${placeholders})`
@@ -43,13 +50,13 @@ export function importData(parsed: ParsedData[], dbPath: string) {
       console.log(`Importing ${rows.length} rows into ${tableName}...`);
       
       for (const row of rows) {
-        const values = columns.map(col => row[col] || '');
+        const values = csvColumns.map(col => row[col] || '');
         insertStmt.run(...values);
       }
     }
 
     db.run("COMMIT");
-    console.log("Database import complete!");
+    console.log("✓ Database import complete!");
   } catch (error) {
     db.run("ROLLBACK");
     console.error("Import failed:", error);

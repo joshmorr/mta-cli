@@ -1,5 +1,5 @@
 import { getDb } from "../connection";
-import type { Route } from "../models";
+import type { Route } from "../../models/static";
 
 export function getAllRoutes(): Route[] {
   const db = getDb();

@@ -1,0 +1,30 @@
+{
+  "baseUrls": {
+    "static": "https://rrgtfsfeeds.s3.amazonaws.com",
+    "realtime": "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds"
+  },
+  "feeds": {
+    "lirr": {
+      "id": "lirr",
+      "name": "Long Island Rail Road",
+      "type": "rail",
+      "description": "Long Island Rail Road commuter rail service",
+      "endpoints": {
+        "static": "gtfslirr.zip",
+        "realtime": "lirr%2Fgtfs-lirr",
+        "alerts": "camsys%2Flirr-alerts"
+      }
+    },
+    "mnr": {
+      "id": "mnr",
+      "name": "Metropolitan North Railroad",
+      "type": "rail",
+      "description": "Metro North Railroad commuter rail service",
+      "endpoints": {
+        "static": "gtfsmnr.zip",
+        "realtime": "mnr%2Fgtfs-mnr",
+        "alerts": "camsys%2Fmnr-alerts"
+      }
+    }
+  }
+}
