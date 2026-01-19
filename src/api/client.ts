@@ -1,5 +1,5 @@
 import GtfsRealtimeBindings from "gtfs-realtime-bindings";
-import { FeedId } from "../models/static";
+import { FeedId } from "../types/gtfs";
 import { getRealtimeFeedUrl, getStaticFeedUrl } from "./urls";
 
 export async function fetchStaticFeed(feed: FeedId) {

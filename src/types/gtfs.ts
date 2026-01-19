@@ -5,6 +5,11 @@ export interface Route {
   route_type: number;
   route_color: string;
   route_text_color: string;
+  // MNR-specific optional fields
+  agency_id?: string;
+  route_short_name?: string;
+  route_desc?: string;
+  route_url?: string;
 }
 
 export interface Stop {
@@ -15,6 +20,11 @@ export interface Stop {
   stop_lon: number;
   stop_url: string;
   wheelchair_boarding: number;
+  // MNR-specific optional fields
+  stop_desc?: string;
+  zone_id?: string;
+  location_type?: number;
+  parent_station?: string;
 }
 
 export interface Trip {
@@ -26,6 +36,9 @@ export interface Trip {
   direction_id: number;
   shape_id: string;
   peak_offpeak: string;
+  // MNR-specific optional fields
+  block_id?: string;
+  wheelchair_accessible?: number;
 }
 
 export interface StopTime {
@@ -36,6 +49,9 @@ export interface StopTime {
   stop_sequence: number;
   pickup_type: number;
   drop_off_type: number;
+  // MNR-specific optional fields
+  track?: string;
+  note_id?: string;
 }
 
 export interface CalendarDate {
@@ -51,6 +67,9 @@ export interface Transfer {
   to_trip_id: string;
   transfer_type: number;
   min_transfer_time: number;
+  // MNR-specific optional fields
+  from_route_id?: string;
+  to_route_id?: string;
 }
 
 export interface Agency {
@@ -67,41 +86,10 @@ export interface Shape {
   shape_pt_lat: number;
   shape_pt_lon: number;
   shape_pt_sequence: number;
+  // MNR-specific optional fields
+  shape_dist_traveled?: number;
 }
 
-// MNR-specific types
-export interface MNRRoute extends Route {
-  agency_id: string;
-  route_short_name: string;
-  route_desc: string;
-  route_url: string;
-}
-
-export interface MNRStop extends Stop {
-  stop_desc: string;
-  zone_id: string;
-  location_type: number;
-  parent_station: string;
-}
-
-export interface MNRTrip extends Trip {
-  block_id: string;
-  wheelchair_accessible: number;
-}
-
-export interface MNRStopTime extends StopTime {
-  track: string;
-  note_id: string;
-}
-
-export interface MNRShape extends Shape {
-  shape_dist_traveled: number;
-}
-
-export interface MNRTransfer extends Transfer {
-  from_route_id: string;
-  to_route_id: string;
-}
 
 export interface Note {
   note_id: string;

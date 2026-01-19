@@ -6,7 +6,6 @@ import {
   registerArrivalsCommand,
   registerTripsCommands,
   registerAlertsCommand,
-  registerUpdateCommand,
 } from "./commands";
 
 // Register all commands
@@ -16,6 +15,5 @@ registerStopsCommands(program);
 registerArrivalsCommand(program);
 registerTripsCommands(program);
 registerAlertsCommand(program);
-registerUpdateCommand(program);
 
 program.parse();

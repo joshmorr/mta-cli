@@ -1,5 +1,5 @@
 import feedsConfig from "../../config/feeds.json";
-import { FeedId } from "../models/static";
+import { FeedId } from "../types/gtfs";
 
 export function getStaticFeedUrl(feed: FeedId) {
   return feedsConfig.baseUrls.static + "/" + feedsConfig.feeds[feed].endpoints.static;

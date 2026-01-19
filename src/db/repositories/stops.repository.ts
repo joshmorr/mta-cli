@@ -1,5 +1,5 @@
 import { getDb } from "../connection";
-import type { Stop } from "../../models/static";
+import type { Stop } from "../../types/gtfs";
 
 export function getStopById(stopId: string): Stop | null {
   const db = getDb();
