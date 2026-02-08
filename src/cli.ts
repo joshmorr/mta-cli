@@ -1,6 +1,7 @@
 import { program } from "commander";
 import {
   registerFeedsCommands,
+  registerUpdateCommand,
   registerRoutesCommands,
   registerStopsCommands,
   registerArrivalsCommand,
@@ -10,6 +11,7 @@ import {
 
 // Register all commands
 registerFeedsCommands(program);
+registerUpdateCommand(program);
 registerRoutesCommands(program);
 registerStopsCommands(program);
 registerArrivalsCommand(program);

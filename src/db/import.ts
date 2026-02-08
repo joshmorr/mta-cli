@@ -1,13 +1,16 @@
-import { getDb, closeDb } from "./connection";
+import { Database } from "bun:sqlite";
 import { buildSchema } from "./schemas/builder";
+import type { FeedId } from "../types/gtfs";
 
 type ParsedData = {
   name: string;
   data: Array<Record<string, string>>;
 };
 
-export function importData(parsed: ParsedData[], dbPath: string, feedId: string) {
-  const db = getDb(dbPath);
+export function importData(parsed: ParsedData[], dbPath: string, feedId: FeedId) {
+  // Create a new database instance directly for importing
+  // We don't use the pool here because we're doing heavy write operations
+  const db = new Database(dbPath);
 
   // Import data from parsed files with transaction for performance
   db.run("BEGIN TRANSACTION");
@@ -62,6 +65,6 @@ export function importData(parsed: ParsedData[], dbPath: string, feedId: string)
     console.error("Import failed:", error);
     throw error;
   } finally {
-    closeDb();
+    db.close();
   }
 };

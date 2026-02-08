@@ -1,20 +1,20 @@
 import { getDb } from "../connection";
-import type { Route } from "../../types/gtfs";
+import type { Route, FeedId } from "../../types/gtfs";
 
-export function getAllRoutes(): Route[] {
-  const db = getDb();
+export function getAllRoutes(feedId: FeedId): Route[] {
+  const db = getDb(feedId);
   const stmt = db.prepare("SELECT * FROM routes");
   return stmt.all() as Route[];
 }
 
-export function getRouteById(routeId: string): Route | null {
-  const db = getDb();
+export function getRouteById(feedId: FeedId, routeId: string): Route | null {
+  const db = getDb(feedId);
   const stmt = db.prepare("SELECT * FROM routes WHERE route_id = ?");
   return stmt.get(routeId) as Route | null;
 }
 
-export function searchRoutesByName(searchTerm: string): Route[] {
-  const db = getDb();
+export function searchRoutesByName(feedId: FeedId, searchTerm: string): Route[] {
+  const db = getDb(feedId);
   const stmt = db.prepare(
     "SELECT * FROM routes WHERE route_long_name LIKE ? ORDER BY route_long_name"
   );

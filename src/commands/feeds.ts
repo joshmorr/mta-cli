@@ -4,23 +4,16 @@ import FeedService from "../services/feed.service";
 import { Database } from "bun:sqlite";
 import { existsSync } from "fs";
 import path from "path";
-import { FeedId } from "../types/gtfs";
 
 export function registerFeedsCommands(program: Command) {
   const feedsCommand = program
     .command('feeds')
-    .description('Manage MTA feeds');
+    .description('Manage static feeds');
 
   feedsCommand
     .command('list')
     .description('List all feeds')
     .action(listFeeds);
-
-  feedsCommand
-    .command('update')
-    .description('Update feed data')
-    .option('--feed <feed>', 'Feed name')
-    .action(updateCommand);
 }
 
 /**
@@ -93,27 +86,6 @@ function listFeeds() {
     console.log('');
   } catch (error) {
     console.error(chalk.red('Error reading feeds configuration:'), error);
-    process.exit(1);
-  }
-}
-
-interface UpdateOptions {
-  feed?: string;
-}
-
-async function updateCommand(options: UpdateOptions) {
-  const feedService = new FeedService();
-  
-  try {
-    if (options.feed) {
-      await feedService.updateFeed(options.feed as FeedId);
-      console.log(`Successfully updated feed: ${options.feed}`);
-    } else {
-      await feedService.updateAllFeeds();
-      console.log('Successfully updated all feeds');
-    }
-  } catch (error) {
-    console.error('Error updating feeds:', error instanceof Error ? error.message : error);
     process.exit(1);
   }
 }
