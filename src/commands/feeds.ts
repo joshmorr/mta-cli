@@ -3,7 +3,8 @@ import chalk from "chalk";
 import FeedService from "../services/feed.service";
 import { Database } from "bun:sqlite";
 import { existsSync } from "fs";
-import path from "path";
+import { getDbPath } from "../db/paths";
+import { FeedId } from "../types/gtfs";
 
 export function registerFeedsCommands(program: Command) {
   const feedsCommand = program
@@ -30,6 +31,10 @@ function getTablesFromDb(dbPath: string): string[] {
   } catch (error) {
     return [];
   }
+}
+
+function isFeedId(value: string): value is FeedId {
+  return (Object.values(FeedId) as string[]).includes(value);
 }
 
 function listFeeds() {
@@ -65,16 +70,20 @@ function listFeeds() {
       console.log(`     ${chalk.gray('Alerts:')}    ${alertsUrl}`);
       
       // Check for database and list tables
-      const dbPath = path.join(process.cwd(), 'data', `${feed.id}.db`);
-      if (existsSync(dbPath)) {
-        const tables = getTablesFromDb(dbPath);
-        if (tables.length > 0) {
-          console.log(`   ${chalk.gray('Tables:')}     ${tables.join(', ')}`);
+      if (isFeedId(feed.id)) {
+        const dbPath = getDbPath(feed.id);
+        if (existsSync(dbPath)) {
+          const tables = getTablesFromDb(dbPath);
+          if (tables.length > 0) {
+            console.log(`   ${chalk.gray('Tables:')}     ${tables.join(', ')}`);
+          } else {
+            console.log(`   ${chalk.gray('Tables:')}     ${chalk.dim('(no tables)')}`);
+          }
         } else {
-          console.log(`   ${chalk.gray('Tables:')}     ${chalk.dim('(no tables)')}`);
+          console.log(`   ${chalk.gray('Database:')}   ${chalk.yellow('Not downloaded')}`);
         }
       } else {
-        console.log(`   ${chalk.gray('Database:')}   ${chalk.yellow('Not downloaded')}`);
+        console.log(`   ${chalk.gray('Database:')}   ${chalk.red('Unsupported feed ID')}`);
       }
       
       // Add spacing between feeds

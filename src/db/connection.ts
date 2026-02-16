@@ -1,5 +1,5 @@
 import { Database } from "bun:sqlite";
-import path from "path";
+import { getDbPath } from "./paths";
 import type { FeedId } from "../types/gtfs";
 
 const dbPool = new Map<string, Database>();
@@ -10,7 +10,7 @@ const dbPool = new Map<string, Database>();
  */
 export function getDb(feedId: FeedId): Database {
   if (!dbPool.has(feedId)) {
-    const dbPath = path.join(process.cwd(), "data", `${feedId}.db`);
+    const dbPath = getDbPath(feedId);
     dbPool.set(feedId, new Database(dbPath));
   }
   return dbPool.get(feedId)!;

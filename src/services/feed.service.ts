@@ -1,5 +1,6 @@
 import parse from "csv-simple-parser";
 import { importData } from "../db/import";
+import { getDbPath } from "../db/paths";
 import { unzip } from "../utils/zip";
 import { fetchStaticFeed } from "../api/client";
 import { FeedId } from "../types/gtfs";
@@ -38,7 +39,7 @@ export default class FeedService {
       };
     });
 
-    importData(parsed, `data/${feedId}.db`, feedId);
+    importData(parsed, getDbPath(feedId), feedId);
   }
 
   /**

@@ -10,6 +10,7 @@
         "commander": "^14.0.2",
         "csv-simple-parser": "^2.0.2",
         "gtfs-realtime-bindings": "^1.1.1",
+        "xdirs": "^0.2.0",
       },
       "devDependencies": {
         "@types/adm-zip": "^0.5.7",
@@ -196,6 +197,8 @@
     "word-wrap": ["word-wrap@1.2.5", "", {}, "sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA=="],
 
     "wrappy": ["wrappy@1.0.2", "", {}, "sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ=="],
+
+    "xdirs": ["xdirs@0.2.0", "", {}, "sha512-LApHJnqRRDSXuXff4VoSpG4+vJbT1eqqTNSmpFR4XaHonp4gZcJ+bPcpYOEhaC3TSCDqwT8ObxMDGDiPRE02TA=="],
 
     "xmlcreate": ["xmlcreate@2.0.4", "", {}, "sha512-nquOebG4sngPmGPICTS5EnxqhKbCmz5Ox5hsszI2T6U5qdrJizBc+0ilYSEjTSzU0yZcmvppztXe/5Al5fUwdg=="],
 

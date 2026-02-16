@@ -34,6 +34,7 @@ export default class RouteService {
     for (const feedId of feedIds) {
       try {
         results[feedId] = getAllRoutes(feedId);
+
       } catch (error) {
         console.error(`Error fetching routes for feed ${feedId}:`, error);
         results[feedId] = [];
